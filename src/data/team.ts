@@ -20,7 +20,7 @@ export const leadershipData: FacultyMember[] = [
     qualification: 'M.E., Ph.D.',
     designation: 'Professor & Head of Department',
     role: 'Head of The Department & Crevation Lab Lead',
-    image: '/lovable-uploads/50885d3b-8143-43cd-9747-546663c22c17.png',
+    image: '/images/faculty/rajasekaran.png',
   },
   {
     name: 'Dr. S. Karuppusamy',
@@ -35,32 +35,32 @@ export const verticalFacultyIncharges: FacultyMember[] = [
   {
     name: 'Mr. Praveenkumar',
     designation: 'Assistant Professor / CSE',
-    role: 'Staff In-charge - RIC (Research & Innovation Cell)',
-    image: '/lovable-uploads/71f5b66a-b7fb-4a7c-a25a-cf47bdd6b834.png',
-  },
-  {
-    name: 'Mr. Thiruvenkatasuresh',
-    designation: 'Assistant Professor / CSE',
-    role: 'Staff In-charge - GenAI (Generative Artificial Intelligence)',
-    image: '/lovable-uploads/71f5b66a-b7fb-4a7c-a25a-cf47bdd6b834.png',
+    role: 'Staff In-charge - RIC (Robotics Intelligence Center)',
+    image: '/images/faculty/praveenkumar.png',
   },
   {
     name: 'Ms. Geetha',
     designation: 'Assistant Professor / CSE',
     role: 'Staff In-charge - CIC (Center for Intelligent Computing)',
-    image: '/lovable-uploads/71f5b66a-b7fb-4a7c-a25a-cf47bdd6b834.png',
+    image: '/images/faculty/geetha.png',
+  },
+  {
+    name: 'Mr. Thiruvenkatasuresh',
+    designation: 'Assistant Professor / CSE',
+    role: 'Staff In-charge - GenAI (Generative Artificial Intelligence)',
+    image: '/images/faculty/thiruvenkatasuresh.png',
   },
   {
     name: 'Ms. Easwari',
     designation: 'Assistant Professor / CSE',
     role: 'Staff In-charge - AV/VR (Augmented & Virtual Reality)',
-    image: '/lovable-uploads/71f5b66a-b7fb-4a7c-a25a-cf47bdd6b834.png',
+    image: '/images/faculty/easwari.png',
   },
   {
     name: 'Dr. T. Rajasekaran',
     designation: 'Professor & Head / CSE',
     role: 'Staff In-charge - Crevation Lab',
-    image: '/lovable-uploads/50885d3b-8143-43cd-9747-546663c22c17.png',
+    image: '/images/faculty/rajasekaran.png',
   },
 ];
 

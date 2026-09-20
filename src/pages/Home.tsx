@@ -18,18 +18,15 @@ import {
   Compass,
 } from "lucide-react"
 import { Link } from "react-router-dom"
-import { verticalsData, VerticalItem } from "@/data/verticals"
 import { eventsData, EventItem } from "@/data/events"
 import { achievementsData } from "@/data/achievements"
 import { ActivityCalendar } from "@/components/ActivityCalendar"
 import { BrochureModal } from "@/components/BrochureModal"
-import { VerticalDetailsModal } from "@/components/VerticalDetailsModal"
 import { StudentFeedbackModal } from "@/components/StudentFeedbackModal"
 
 export const Home: React.FC = () => {
   const { scrollY } = useScroll()
   const [scrolledPastHero, setScrolledPastHero] = useState(false)
-  const [selectedVertical, setSelectedVertical] = useState<VerticalItem | null>(null)
   const [brochureEvent, setBrochureEvent] = useState<EventItem | null>(null)
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false)
 
@@ -105,10 +102,10 @@ export const Home: React.FC = () => {
                 variant="outline"
                 className="bg-slate-900/60 hover:bg-slate-800 text-white border-slate-700 text-base px-8 py-6 rounded-xl font-semibold transition-all"
               >
-                <a href="#verticals">
+                <Link to="/verticals">
                   <Compass className="w-5 h-5 mr-2 text-indigo-400" />
                   <span>Department Verticals</span>
-                </a>
+                </Link>
               </Button>
 
               <Button
@@ -300,93 +297,7 @@ export const Home: React.FC = () => {
       </section>
 
       {/* ==================================================
-          3. DEPARTMENT VERTICALS SECTION (5 Cards, 3+2 Grid)
-          ================================================== */}
-      <section id="verticals" className="py-20 md:py-32 px-4 relative overflow-hidden bg-slate-950">
-        <div className="container mx-auto max-w-7xl relative z-10">
-          <div className="text-center mb-16">
-            <span className="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 inline-block mb-3">
-              Specialized Innovation Centers
-            </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-4">
-              Department Verticals
-            </h2>
-            <p className="text-slate-300 text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
-              Explore the specialized verticals driving innovation, research, and emerging technology within the Department of Computer Science and Engineering.
-            </p>
-          </div>
-
-          {/* 3 + 2 Balanced Layout (Desktop), 2 cols (Tablet), 1 col (Mobile) */}
-          <div className="flex flex-wrap justify-center gap-6 sm:gap-8">
-            {verticalsData.map((vertical, index) => (
-              <motion.div
-                key={vertical.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -6 }}
-                className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.333rem)] bg-slate-800/70 border border-slate-700 hover:border-indigo-500/50 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all flex flex-col justify-between group"
-              >
-                <div>
-                  {/* Visual Image Area */}
-                  <div className="w-full aspect-[16/9] relative overflow-hidden bg-slate-900">
-                    <img
-                      src={vertical.image}
-                      alt={vertical.name}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      loading="lazy"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/lovable-uploads/fornt.jpg';
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/25 to-transparent" />
-
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <h3 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight drop-shadow-md">
-                        {vertical.name}
-                      </h3>
-                      <p className="text-indigo-300 text-xs sm:text-sm font-medium drop-shadow-md">
-                        {vertical.fullName}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Body Info */}
-                  <div className="p-6">
-                    <div className="flex items-center gap-2 mb-4 pb-3 border-b border-slate-700/60">
-                      <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                        Staff In-charge:
-                      </span>
-                      <span className="text-sm font-bold text-amber-400">
-                        {vertical.staffInCharge}
-                      </span>
-                    </div>
-
-                    <p className="text-slate-300 text-sm leading-relaxed">
-                      {vertical.summary}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Optional View Details CTA */}
-                <div className="p-6 pt-0">
-                  <Button
-                    variant="outline"
-                    onClick={() => setSelectedVertical(vertical)}
-                    className="w-full border-slate-700 text-slate-300 hover:text-white hover:bg-slate-700/60 rounded-xl"
-                  >
-                    View Details
-                  </Button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ==================================================
-          4. LATEST ACHIEVEMENTS PREVIEW
+          3. LATEST ACHIEVEMENTS PREVIEW
           ================================================== */}
       <section className="py-20 md:py-28 px-4 relative overflow-hidden bg-slate-900/50 border-t border-slate-800">
         <div className="container mx-auto max-w-7xl relative z-10">
@@ -454,7 +365,7 @@ export const Home: React.FC = () => {
       </section>
 
       {/* ==================================================
-          5. ACTIVITY CALENDAR PREVIEW
+          4. ACTIVITY CALENDAR PREVIEW
           ================================================== */}
       <section className="py-20 md:py-28 px-4 relative overflow-hidden bg-slate-950 border-t border-slate-800">
         <div className="container mx-auto max-w-7xl relative z-10">
@@ -485,11 +396,6 @@ export const Home: React.FC = () => {
       </section>
 
       {/* Modals */}
-      <VerticalDetailsModal
-        vertical={selectedVertical}
-        onClose={() => setSelectedVertical(null)}
-      />
-
       <BrochureModal
         isOpen={!!brochureEvent}
         onClose={() => setBrochureEvent(null)}
