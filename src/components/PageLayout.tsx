@@ -27,7 +27,7 @@ interface PageLayoutProps {
 }
 
 const COLORS = {
-  background: "#0F172A", // Changed from white to dark slate
+  background: "#0F172A",
   cardBg: "#1E293B",
   primary: "#6366F1",
   secondary: "#8B5CF6",

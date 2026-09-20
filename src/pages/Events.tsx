@@ -200,16 +200,16 @@ export const Events: React.FC = () => {
       </section>
 
       {/* Activity Calendar Section */}
-      <section className="py-16 md:py-20 px-4 max-w-7xl mx-auto border-t border-slate-800">
+      <section id="calendar" className="py-16 md:py-20 px-4 max-w-7xl mx-auto border-t border-slate-800 scroll-mt-20">
         <div className="text-center mb-12">
           <span className="px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-violet-500/15 text-violet-300 border border-violet-500/30 inline-block mb-3">
-            Schedule & Planning
+            Official Roadmap • 2026–2027
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-3">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-3">
             Department Activity Calendar
           </h2>
-          <p className="text-slate-300 text-base max-w-2xl mx-auto">
-            Monthly schedule of planned department workshops, student project reviews, guest lectures, and association meetups.
+          <p className="text-slate-300 text-base max-w-3xl mx-auto leading-relaxed">
+            Official academic roadmap for the Department of Computer Science and Engineering at Nandha Engineering College. Covering association launches, SIH hackathons, innovation exhibitions, national symposiums, and career milestones.
           </p>
         </div>
 

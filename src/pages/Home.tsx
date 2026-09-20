@@ -472,8 +472,8 @@ export const Home: React.FC = () => {
               variant="outline"
               className="border-indigo-500/50 text-indigo-300 hover:bg-indigo-500/10 self-start md:self-auto rounded-xl"
             >
-              <Link to="/events" className="flex items-center gap-2">
-                <span>View Complete Calendar</span>
+              <Link to="/events#calendar" className="flex items-center gap-2">
+                <span>View Complete Roadmap</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </Button>
