@@ -1,235 +1,230 @@
-"use client"
+import React, { useState } from 'react';
+import PageLayout from '@/components/PageLayout';
+import { motion } from 'framer-motion';
+import {
+  Calendar,
+  Clock,
+  MapPin,
+  ExternalLink,
+  FileText,
+  CheckCircle2,
+  AlertCircle,
+  Sparkles,
+} from 'lucide-react';
+import { eventsData, EventItem } from '@/data/events';
+import { Button } from '@/components/ui/button';
+import { BrochureModal } from '@/components/BrochureModal';
+import { ActivityCalendar } from '@/components/ActivityCalendar';
+import { cn } from '@/lib/utils';
 
-import { Calendar, ExternalLink } from 'lucide-react'
-import PageLayout from '@/components/PageLayout'
-import { Button } from '@/components/ui/button'
-import { motion } from 'framer-motion'
+export const Events: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<'all' | 'upcoming' | 'ongoing' | 'completed'>('upcoming');
+  const [brochureEvent, setBrochureEvent] = useState<EventItem | null>(null);
 
-const Events = () => {
-  const events = [
-    {
-      year: "2025",
-      events: [
-        {
-          title: "Teachers Day 2025",
-          date: "Sep 2025",
-          description: "Celebration honoring teachers with cultural programs and activities to show gratitude.",
-          driveLink: "https://drive.google.com/drive/folders/1Z7-cK7oONpIpfL1h6oOB9f2MLx3-ASBE?usp=drive_link",
-        },
-        {
-          title: "SYNECTICS'25",
-          date: "Mar 2025",
-          description: "National Level Technical Symposium featuring technical events, workshops, and competitions.",
-          driveLink: "https://drive.google.com/drive/folders/1pQ2ZnrXSy7x-dIOayaeSVrpfRF0aosop?usp=drive_link",
-        },
-        {
-          title: "Investiture Ceremony",
-          date: "Mar 2025",
-          description: "The Investiture Ceremony is when new student leaders get their badges and take an oath.",
-          driveLink: "https://drive.google.com/drive/folders/1IyG7ZfHogAMbvOgIz33kAMqLCA5blmt7?usp=drive_link",
-        },
-        {
-          title: "Pongal Celebration 2025",
-          date: "Jan 2025",
-          description: "Traditional harvest festival celebration with cultural activities.",
-          driveLink: "https://drive.google.com/drive/folders/1AUS9MpW05no-f_HsgDGb9VlOITqfWHUk?usp=drive_link",
-        },
-      ],
-    },
-    {
-      year: "2024",
-      events: [
-        {
-          title: "Inter Department Event",
-          date: "Oct 2024",
-          description: "Collaborative events between different departments.",
-          driveLink: "https://drive.google.com/drive/folders/1lPYTw-e2U0lG_yHxKz2luROgSzdlKcIf?usp=drive_link",
-        },
-        {
-          title: "Teachers Day",
-          date: "Sep 2024",
-          description: "Celebration honoring teachers with cultural programs and activities.",
-          driveLink: "https://drive.google.com/drive/folders/1Z7-cK7oONpIpfL1h6oOB9f2MLx3-ASBE?usp=drive_link",
-        },
-        {
-          title: "Induction Program 2028 Batch",
-          date: "Sep 2024",
-          description: "Welcome program for the new batch of students.",
-          driveLink: "https://drive.google.com/drive/folders/1cKPw4Ny8l5BY8NfL-9snsgzemzZ3TWQw?usp=drive_link",
-        },
-        {
-          title: "SYNECTICS'24",
-          date: "Mar 2024",
-          description: "National Level Technical Symposium with various technical competitions.",
-          driveLink: "https://drive.google.com/drive/folders/1q_ZyZsSaA-u98v29HcyC3dp-38wLvHwv?usp=drive_link",
-        },
-      ],
-    },
-  ]
+  const filteredEvents =
+    activeTab === 'all'
+      ? eventsData
+      : eventsData.filter((e) => e.category === activeTab);
 
   return (
     <PageLayout>
-      <section className="pt-16 md:pt-20 lg:pt-24 py-12 md:py-16 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-10 pointer-events-none"></div>
-        
-        <div className="container mx-auto text-center relative z-10 max-w-6xl">
-          <motion.h1 
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-4 tracking-tight"
+      {/* Hero Section */}
+      <section className="pt-24 md:pt-28 pb-12 px-4 relative overflow-hidden bg-slate-950/50">
+        <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-10 pointer-events-none" />
+        <div className="container mx-auto text-center relative z-10 max-w-4xl">
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6 }}
           >
-            <span className="bg-gradient-to-r from-indigo-500 via-violet-500 to-pink-500 bg-clip-text text-transparent">
-              Our Events
+            <span className="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 inline-block mb-4">
+              Academic Year 2026–27
             </span>
-          </motion.h1>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-4">
+              Department <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-pink-400 bg-clip-text text-transparent">Events & Symposiums</span>
+            </h1>
+            <p className="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+              Explore upcoming symposiums, technical workshops, coding tournaments, and past milestones organized by the CSE Association.
+            </p>
+          </motion.div>
         </div>
       </section>
 
-      {/* Timeline Section */}
-      <section className="bg-slate-950 py-20 relative">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <div className="relative">
-            {/* S-shaped timeline */}
-            <svg 
-              className="absolute left-1/2 top-0 h-full w-full max-w-md transform -translate-x-1/2 z-0 pointer-events-none"
-              viewBox="0 0 100 800"
-              preserveAspectRatio="none"
+      {/* Events Section with Tabs */}
+      <section className="py-12 md:py-16 px-4 max-w-7xl mx-auto">
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
+          {[
+            { key: 'upcoming', label: 'Upcoming Events' },
+            { key: 'ongoing', label: 'Ongoing Events' },
+            { key: 'completed', label: 'Completed Events' },
+            { key: 'all', label: 'All Events' },
+          ].map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key as any)}
+              className={cn(
+                'px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200',
+                activeTab === tab.key
+                  ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-500/25 scale-105'
+                  : 'bg-slate-800/80 text-slate-300 hover:bg-slate-800 hover:text-white border border-slate-700/60'
+              )}
             >
-              <path 
-                d="M50,0 
-                   C20,50 20,100 50,150
-                   C80,200 80,250 50,300
-                   C20,350 20,400 50,450
-                   C80,500 80,550 50,600
-                   C20,650 20,700 50,750
-                   C80,800 80,850 50,900"
-                stroke="url(#timelineGradient)"
-                strokeWidth="2"
-                fill="none"
-                strokeDasharray="5,3"
-              />
-              <defs>
-                <linearGradient id="timelineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#EC4899" />
-                  <stop offset="50%" stopColor="#8B5CF6" />
-                  <stop offset="100%" stopColor="#6366F1" />
-                </linearGradient>
-              </defs>
-            </svg>
-
-            {/* Year 2025 Section - Most Recent at Top */}
-            <div className="relative mb-32">
-              <div className="flex justify-center my-12">
-                <motion.div 
-                  className="px-6 py-2 bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white font-bold rounded-full shadow-lg"
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  whileInView={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  2025
-                </motion.div>
-              </div>
-
-              {events[0].events.map((event, i) => (
-                <motion.div
-                  key={i}
-                  className={`relative mb-16 w-full flex ${i % 2 === 0 ? 'justify-start' : 'justify-end'} items-center`}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: i * 0.1 }}
-                >
-                  {/* Dot on the timeline */}
-                  <div className="absolute left-1/2 w-5 h-5 bg-gradient-to-r from-pink-500 to-fuchsia-600 rounded-full z-10 transform -translate-x-1/2 border-4 border-slate-950 shadow-lg" />
-
-                  {/* Event Card */}
-                  <div className={`md:w-[45%] w-full px-4 z-10 ${i % 2 === 0 ? 'text-left' : 'text-right'}`}>
-                    <motion.div 
-                      className="backdrop-blur-xl border border-pink-500/30 rounded-xl p-6 bg-slate-900/60 hover:border-violet-500/50 hover:shadow-xl transition-all shadow-lg"
-                      whileHover={{ scale: 1.02 }}
-                    >
-                      <div className={`flex items-center gap-2 text-pink-300 text-sm mb-2 ${i % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
-                        <Calendar className="w-4 h-4" />
-                        <span>{event.date}</span>
-                      </div>
-                      <h3 className="text-white font-bold text-xl mb-2">{event.title}</h3>
-                      <p className="text-slate-300 mb-4">{event.description}</p>
-                      <div className={`${i % 2 === 0 ? 'justify-start' : 'justify-end'} flex`}>
-                        <Button 
-                          variant="outline" 
-                          className="border-pink-500 text-pink-300 hover:bg-pink-500/10 hover:text-white"
-                          asChild
-                        >
-                          <a href={event.driveLink} target="_blank" rel="noreferrer" className="flex items-center gap-2">
-                            <span>View Gallery</span>
-                            <ExternalLink className="w-4 h-4" />
-                          </a>
-                        </Button>
-                      </div>
-                    </motion.div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Year 2024 Section - Older at Bottom */}
-            <div className="relative">
-              <div className="flex justify-center my-12">
-                <motion.div 
-                  className="px-6 py-2 bg-gradient-to-r from-indigo-500 to-violet-600 text-white font-bold rounded-full shadow-lg"
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  whileInView={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                >
-                  2024
-                </motion.div>
-              </div>
-
-              {events[1].events.map((event, i) => (
-                <motion.div
-                  key={i}
-                  className={`relative mb-16 w-full flex ${i % 2 !== 0 ? 'justify-start' : 'justify-end'} items-center`}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: i * 0.1 }}
-                >
-                  {/* Dot on the timeline */}
-                  <div className="absolute left-1/2 w-5 h-5 bg-gradient-to-r from-indigo-500 to-violet-600 rounded-full z-10 transform -translate-x-1/2 border-4 border-slate-950 shadow-lg" />
-
-                  {/* Event Card */}
-                  <div className={`md:w-[45%] w-full px-4 z-10 ${i % 2 !== 0 ? 'text-left' : 'text-right'}`}>
-                    <motion.div 
-                      className="backdrop-blur-xl border border-indigo-500/30 rounded-xl p-6 bg-slate-900/60 hover:border-violet-500/50 hover:shadow-xl transition-all shadow-lg"
-                      whileHover={{ scale: 1.02 }}
-                    >
-                      <div className={`flex items-center gap-2 text-indigo-300 text-sm mb-2 ${i % 2 !== 0 ? 'justify-start' : 'justify-end'}`}>
-                        <Calendar className="w-4 h-4" />
-                        <span>{event.date}</span>
-                      </div>
-                      <h3 className="text-white font-bold text-xl mb-2">{event.title}</h3>
-                      <p className="text-slate-300 mb-4">{event.description}</p>
-                      <div className={`${i % 2 !== 0 ? 'justify-start' : 'justify-end'} flex`}>
-                        <Button 
-                          variant="outline" 
-                          className="border-indigo-500 text-indigo-300 hover:bg-indigo-500/10 hover:text-white"
-                          asChild
-                        >
-                          <a href={event.driveLink} target="_blank" rel="noreferrer" className="flex items-center gap-2">
-                            <span>View Gallery</span>
-                            <ExternalLink className="w-4 h-4" />
-                          </a>
-                        </Button>
-                      </div>
-                    </motion.div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
+              {tab.label}
+            </button>
+          ))}
         </div>
-      </section>
-    </PageLayout>
-  )
-}
 
-export default Events
+        {/* Events Cards */}
+        {filteredEvents.length === 0 ? (
+          <div className="text-center py-16 bg-slate-900/40 rounded-2xl border border-slate-800">
+            <AlertCircle className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+            <h3 className="text-lg font-bold text-white mb-1">No Events Currently In This Category</h3>
+            <p className="text-slate-400 text-sm">
+              Please check back soon or explore our upcoming schedule below.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredEvents.map((event, idx) => (
+              <motion.div
+                key={event.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.08 }}
+                whileHover={{ y: -6 }}
+                className="bg-slate-800/60 backdrop-blur-sm border border-slate-700 hover:border-indigo-500/50 rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all flex flex-col justify-between group"
+              >
+                <div>
+                  {/* Event Image */}
+                  <div className="relative h-48 w-full overflow-hidden bg-slate-900">
+                    <img
+                      src={event.image}
+                      alt={event.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/lovable-uploads/fornt.jpg';
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent" />
+
+                    <div className="absolute top-3 left-3 flex items-center gap-2">
+                      <span
+                        className={cn(
+                          'px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider',
+                          event.category === 'upcoming' && 'bg-indigo-500/90 text-white',
+                          event.category === 'ongoing' && 'bg-amber-500/90 text-slate-950',
+                          event.category === 'completed' && 'bg-slate-800/90 text-slate-300'
+                        )}
+                      >
+                        {event.category}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Body Content */}
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-indigo-300 transition-colors leading-snug">
+                      {event.title}
+                    </h3>
+
+                    {/* Metadata */}
+                    <div className="space-y-2 mb-4 text-xs text-slate-300 bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
+                      <div className="flex items-center gap-2">
+                        <Calendar className="w-4 h-4 text-indigo-400 shrink-0" />
+                        <span className="font-semibold">{event.date}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Clock className="w-4 h-4 text-pink-400 shrink-0" />
+                        <span>{event.time}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <MapPin className="w-4 h-4 text-amber-400 shrink-0" />
+                        <span className="line-clamp-1">{event.venue}</span>
+                      </div>
+                    </div>
+
+                    <p className="text-sm text-slate-300 leading-relaxed line-clamp-3">
+                      {event.description}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Actions (Brochure & Register) */}
+                <div className="p-6 pt-0 flex flex-col sm:flex-row gap-3">
+                  {event.brochure && (
+                    <Button
+                      variant="outline"
+                      onClick={() => setBrochureEvent(event)}
+                      className="flex-1 border-slate-700 text-slate-200 hover:text-white hover:bg-slate-700/60"
+                    >
+                      <FileText className="w-4 h-4 mr-2 text-indigo-400" />
+                      View Brochure
+                    </Button>
+                  )}
+
+                  {event.registrationLink && event.category !== 'completed' ? (
+                    <Button
+                      asChild
+                      className="flex-1 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-medium shadow-md"
+                    >
+                      <a
+                        href={event.registrationLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Register <ExternalLink className="w-4 h-4 ml-1.5" />
+                      </a>
+                    </Button>
+                  ) : event.driveLink ? (
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="flex-1 border-slate-700 text-slate-300 hover:bg-slate-700/60"
+                    >
+                      <a
+                        href={event.driveLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Photo Archive <ExternalLink className="w-4 h-4 ml-1.5" />
+                      </a>
+                    </Button>
+                  ) : null}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* Activity Calendar Section */}
+      <section className="py-16 md:py-20 px-4 max-w-7xl mx-auto border-t border-slate-800">
+        <div className="text-center mb-12">
+          <span className="px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-violet-500/15 text-violet-300 border border-violet-500/30 inline-block mb-3">
+            Schedule & Planning
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-3">
+            Department Activity Calendar
+          </h2>
+          <p className="text-slate-300 text-base max-w-2xl mx-auto">
+            Monthly schedule of planned department workshops, student project reviews, guest lectures, and association meetups.
+          </p>
+        </div>
+
+        <ActivityCalendar />
+      </section>
+
+      {/* Brochure Modal Popup */}
+      <BrochureModal
+        isOpen={!!brochureEvent}
+        onClose={() => setBrochureEvent(null)}
+        title={brochureEvent?.title || 'Event'}
+        brochureUrl={brochureEvent?.brochure || ''}
+      />
+    </PageLayout>
+  );
+};
+
+export default Events;

@@ -9,6 +9,9 @@ import Team from "./pages/Team";
 import Grievances from "./pages/Grievances";
 import Contact from "./pages/Contact";
 import Events from "./pages/Events";
+import Achievements from "./pages/Achievements";
+import Gallery from "./pages/Gallery";
+import CoordinatorDashboard from "./pages/CoordinatorDashboard";
 
 const queryClient = new QueryClient();
 
@@ -16,15 +19,18 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
-      <Sonner />
+      <Sonner position="top-right" />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/team" element={<Team />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/achievements" element={<Achievements />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="/grievances" element={<Grievances />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/coordinator" element={<CoordinatorDashboard />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
