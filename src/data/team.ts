@@ -20,7 +20,7 @@ export const leadershipData: FacultyMember[] = [
     qualification: 'M.E., Ph.D.',
     designation: 'Professor & Head of Department',
     role: 'Head of The Department & Crevation Lab Lead',
-    image: '/lovable-uploads/50885d3b-8143-43cd-9747-546663c22c17.png',
+    image: '/images/faculty/rajasekaran.png',
   },
   {
     name: 'Dr. S. Karuppusamy',

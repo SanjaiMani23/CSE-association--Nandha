@@ -1,3 +1,11 @@
+export interface VerticalAchievement {
+  title: string;
+  description: string;
+  date?: string;
+  venue?: string;
+  partner?: string;
+}
+
 export interface VerticalItem {
   id: string;
   name: string;

@@ -28,6 +28,14 @@ const Navbar = () => {
   useEffect(() => {
     if (!location.hash) {
       window.scrollTo(0, 0);
+    } else {
+      const id = location.hash.replace('#', '');
+      const element = document.getElementById(id);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
     }
   }, [location.pathname, location.hash]);
 
