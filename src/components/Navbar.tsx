@@ -1,46 +1,74 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { Menu, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { ChevronDown, Menu, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-const navFeatures = [
-  { path: '/', label: 'Home' },
-  { path: '/verticals', label: 'Verticals' },
-  { path: '/events', label: 'Events' },
+const aboutDropdownItems = [
+  { path: '/events', label: 'Event' },
+  { path: '/events#calendar', label: 'Activity Calendar' },
+  { path: '/verticals', label: 'Vertical' },
+  { path: '/team', label: 'Faculty & Coordinators' },
   { path: '/achievements', label: 'Achievements' },
   { path: '/gallery', label: 'Gallery' },
-  { path: '/team', label: 'Team' },
-  { path: '/grievances', label: 'Grievances' },
-  { path: '/contact', label: 'Contact' },
 ];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isMobileAboutOpen, setIsMobileAboutOpen] = useState(false);
   const location = useLocation();
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+    setIsMobileAboutOpen(false);
   };
 
   // Scroll to top on route change unless hash is present
   useEffect(() => {
     if (!location.hash) {
       window.scrollTo(0, 0);
+    } else {
+      const id = location.hash.replace('#', '');
+      const element = document.getElementById(id);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
     }
   }, [location.pathname, location.hash]);
 
-  // Close menu on route change
+  // Close dropdowns on route or hash change
   useEffect(() => {
+    setIsAboutOpen(false);
     setIsOpen(false);
+    setIsMobileAboutOpen(false);
   }, [location.pathname, location.hash]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsAboutOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Determine if About or any of its children are active
+  const isAboutActive = aboutDropdownItems.some(item => 
+    location.pathname === item.path.split('#')[0] && location.pathname !== '/'
+  );
 
   return (
     <nav className={cn(
       "fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#7A73D1] to-[#211C84]",
       "shadow-lg shadow-[#4D55CC]/30 backdrop-blur-md w-full"
     )}>
-      <div className="w-full px-3 sm:px-5 lg:px-6">
+      <div className="w-full px-3 sm:px-5 lg:px-8">
         <div className="flex justify-between items-center h-20 md:h-24 w-full">
           {/* Logo / Branding - Left Most Corner */}
           <Link to="/" className="flex items-center space-x-3 group shrink-0 pl-1">
@@ -60,16 +88,82 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation Features - Right Most Corner */}
-          <div className="hidden lg:flex lg:items-center lg:gap-1 xl:gap-2 ml-auto pr-1">
-            {navFeatures.map((item) => (
-              <NavLink 
-                key={item.path} 
-                to={item.path} 
-                currentPath={location.pathname}
+          <div className="hidden lg:flex lg:items-center lg:gap-2 xl:gap-3 ml-auto pr-1">
+            {/* Home Link */}
+            <NavLink to="/" currentPath={location.pathname}>
+              Home
+            </NavLink>
+
+            {/* About Dropdown */}
+            <div 
+              ref={dropdownRef} 
+              className="relative"
+              onMouseEnter={() => setIsAboutOpen(true)}
+              onMouseLeave={() => setIsAboutOpen(false)}
+            >
+              <button
+                type="button"
+                onClick={() => setIsAboutOpen(!isAboutOpen)}
+                className={cn(
+                  "relative px-3 py-2 text-sm font-semibold tracking-wide transition-all duration-300 rounded-lg group whitespace-nowrap flex items-center gap-1.5",
+                  isAboutActive
+                    ? "text-white font-bold bg-white/15 shadow-sm"
+                    : "text-white/85 hover:text-white hover:bg-white/10"
+                )}
               >
-                {item.label}
-              </NavLink>
-            ))}
+                <span>About</span>
+                <ChevronDown className={cn(
+                  "w-4 h-4 transition-transform duration-200 stroke-[2.5]",
+                  isAboutOpen && "rotate-180"
+                )} />
+                {isAboutActive ? (
+                  <span className="absolute bottom-0.5 left-1/2 transform -translate-x-1/2 w-3/4 h-[2px] bg-white rounded-full"></span>
+                ) : (
+                  <span className="absolute bottom-0.5 left-1/2 transform -translate-x-1/2 w-0 h-[2px] bg-white/80 rounded-full group-hover:w-3/4 transition-all duration-300"></span>
+                )}
+              </button>
+
+              {/* Dropdown Menu Box */}
+              <div 
+                className={cn(
+                  "absolute right-0 top-full pt-1.5 w-60 transition-all duration-200 origin-top-right z-50",
+                  isAboutOpen
+                    ? "opacity-100 scale-100 visible translate-y-0"
+                    : "opacity-0 scale-95 invisible -translate-y-2 pointer-events-none"
+                )}
+              >
+                <div className="bg-white rounded-2xl shadow-2xl shadow-slate-950/25 border border-slate-100/90 py-2.5 overflow-hidden">
+                  <ul className="space-y-0.5">
+                    {aboutDropdownItems.map((item) => {
+                      const isItemActive =
+                        location.pathname === item.path.split('#')[0] &&
+                        (!item.path.includes('#') || location.hash === `#${item.path.split('#')[1]}`);
+                      return (
+                        <li key={item.path + item.label}>
+                          <Link
+                            to={item.path}
+                            onClick={() => setIsAboutOpen(false)}
+                            className={cn(
+                              "block px-5 py-2.5 text-sm font-medium transition-colors duration-150 mx-1.5 rounded-xl",
+                              isItemActive
+                                ? "text-indigo-600 bg-indigo-50/80 font-bold"
+                                : "text-slate-700 hover:bg-slate-100/80 hover:text-indigo-600"
+                            )}
+                          >
+                            {item.label}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact / Feedback Link */}
+            <NavLink to="/contact" currentPath={location.pathname}>
+              Contact / Feedback
+            </NavLink>
           </div>
 
           {/* Mobile Menu Controls */}
@@ -94,17 +188,76 @@ const Navbar = () => {
           )}
           style={{ top: '100%' }}
         >
-          <div className="flex flex-col divide-y divide-white/15 px-3 space-y-0.5">
-            {navFeatures.map((item) => (
-              <MobileNavLink 
-                key={item.path}
-                to={item.path} 
-                onClick={toggleMenu} 
-                isActive={location.pathname === item.path}
+          <div className="flex flex-col divide-y divide-white/15 px-3 space-y-1">
+            {/* Home */}
+            <MobileNavLink 
+              to="/" 
+              onClick={toggleMenu} 
+              isActive={location.pathname === '/'}
+            >
+              Home
+            </MobileNavLink>
+
+            {/* About Dropdown in Mobile */}
+            <div className="py-1">
+              <button
+                type="button"
+                onClick={() => setIsMobileAboutOpen(!isMobileAboutOpen)}
+                className={cn(
+                  "w-full group px-6 py-3.5 text-base font-semibold tracking-wide transition-all duration-200 flex items-center justify-between rounded-lg",
+                  isAboutActive
+                    ? "text-white bg-white/20 font-bold"
+                    : "text-white/90 hover:bg-white/10 hover:text-white"
+                )}
               >
-                {item.label}
-              </MobileNavLink>
-            ))}
+                <div className="flex items-center">
+                  {isAboutActive && (
+                    <span className="w-1.5 h-4 bg-white rounded-full mr-2.5 animate-pulse"></span>
+                  )}
+                  <span className={isAboutActive ? "ml-1" : "ml-2"}>About</span>
+                </div>
+                <ChevronDown className={cn(
+                  "w-4 h-4 transition-transform duration-200 stroke-[2.5]",
+                  isMobileAboutOpen && "rotate-180"
+                )} />
+              </button>
+              <div className={cn(
+                "overflow-hidden transition-all duration-200",
+                isMobileAboutOpen ? "max-h-80 opacity-100 mt-1" : "max-h-0 opacity-0"
+              )}>
+                <div className="pl-6 pr-2 pb-2 space-y-1">
+                  {aboutDropdownItems.map((item) => {
+                    const isSubActive =
+                      location.pathname === item.path.split('#')[0] &&
+                      (!item.path.includes('#') || location.hash === `#${item.path.split('#')[1]}`);
+                    return (
+                      <Link
+                        key={item.path + item.label}
+                        to={item.path}
+                        onClick={toggleMenu}
+                        className={cn(
+                          "block px-4 py-2.5 text-sm font-medium rounded-lg transition-colors",
+                          isSubActive
+                            ? "text-white bg-white/20 font-bold"
+                            : "text-white/80 hover:text-white hover:bg-white/10"
+                        )}
+                      >
+                        {item.label}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Contact / Feedback */}
+            <MobileNavLink 
+              to="/contact" 
+              onClick={toggleMenu} 
+              isActive={location.pathname === '/contact'}
+            >
+              Contact / Feedback
+            </MobileNavLink>
           </div>
         </div>
       </div>
@@ -124,7 +277,7 @@ const NavLink = ({ to, currentPath, children }: NavLinkProps) => {
     <Link 
       to={to} 
       className={cn(
-        "relative px-2.5 py-1.5 xl:px-3 xl:py-2 text-xs xl:text-sm font-semibold tracking-wide transition-all duration-300 rounded-lg group whitespace-nowrap",
+        "relative px-3 py-2 text-sm font-semibold tracking-wide transition-all duration-300 rounded-lg group whitespace-nowrap",
         isActive 
           ? "text-white font-bold bg-white/15 shadow-sm" 
           : "text-white/85 hover:text-white hover:bg-white/10"
