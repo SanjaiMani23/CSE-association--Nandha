@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { X, CheckCircle2, User, Layers, Target, Compass, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VerticalItem } from '@/data/verticals';
-import { cn } from '@/lib/utils';
 
 interface VerticalDetailsModalProps {
   vertical: VerticalItem | null;
@@ -14,16 +13,7 @@ export const VerticalDetailsModal: React.FC<VerticalDetailsModalProps> = ({
   vertical,
   onClose,
 }) => {
-  const [activeTab, setActiveTab] = useState<'overview' | 'vision-mission' | 'outcomes' | 'focus' | 'achievement'>('overview');
-
-  // Reset to overview when a new vertical is opened
-  useEffect(() => {
-    if (vertical) {
-      setActiveTab('overview');
-    }
-  }, [vertical]);
-
-  // Handle ESC key to close and lock body scroll
+  // Lock body scroll and handle ESC key
   useEffect(() => {
     if (!vertical) return;
 
@@ -52,10 +42,11 @@ export const VerticalDetailsModal: React.FC<VerticalDetailsModalProps> = ({
         onClick={onClose}
       >
         <motion.div
-          initial={{ opacity: 0, scale: 0.96, y: 15 }}
+          initial={{ opacity: 0, scale: 0.95, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative w-full max-w-3xl bg-slate-900 border border-indigo-500/40 rounded-3xl shadow-2xl overflow-hidden"
+          className="relative w-full max-w-3xl bg-slate-900 border border-indigo-500/40 rounded-3xl shadow-2xl overflow-hidden my-auto"
+          onClick={(e) => e.stopPropagation()}
         >
           {/* Top Banner Image */}
           <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-slate-950">
@@ -64,7 +55,7 @@ export const VerticalDetailsModal: React.FC<VerticalDetailsModalProps> = ({
               alt={vertical.name}
               className="w-full h-full object-cover"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = '/images/department-activity-calendar.jpg';
+                (e.target as HTMLImageElement).src = '/lovable-uploads/fornt.jpg';
               }}
             />
             {/* Multi-layered Gradients for Deep Contrast */}
@@ -75,8 +66,9 @@ export const VerticalDetailsModal: React.FC<VerticalDetailsModalProps> = ({
             <button
               onClick={onClose}
               className="absolute top-4 right-4 p-2 bg-slate-900/80 hover:bg-slate-800 text-white rounded-full transition-colors z-10"
+              aria-label="Close details"
             >
-              <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-200" />
+              <X className="w-5 h-5" />
             </button>
             <div className="absolute bottom-4 left-6 right-6">
               <span className="px-3 py-1 bg-indigo-500/80 text-white font-bold text-xs rounded-full uppercase tracking-wider">
@@ -93,6 +85,7 @@ export const VerticalDetailsModal: React.FC<VerticalDetailsModalProps> = ({
 
           {/* Details Body */}
           <div className="p-6 md:p-8 space-y-6 max-h-[65vh] overflow-y-auto">
+            {/* Staff In-charge Info Card */}
             <div className="flex items-center gap-3 p-3.5 bg-slate-800/60 rounded-xl border border-slate-700/60">
               <div className="w-11 h-11 rounded-full overflow-hidden border-2 border-amber-400 bg-amber-500/15 flex items-center justify-center text-amber-300 shrink-0 shadow-xs">
                 {vertical.staffImage ? (
@@ -121,7 +114,7 @@ export const VerticalDetailsModal: React.FC<VerticalDetailsModalProps> = ({
             {/* Summary */}
             <div>
               <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-400 mb-2">
-                Summary
+                Summary & Scope
               </h4>
               <p className="text-slate-200 text-sm sm:text-base leading-relaxed">
                 {vertical.summary}
@@ -177,89 +170,7 @@ export const VerticalDetailsModal: React.FC<VerticalDetailsModalProps> = ({
                     </div>
                   ))}
                 </div>
-              )}
-              {vertical.equipmentOrFocus && (
-                <div className="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 font-medium flex items-center gap-1.5">
-                  <Microscope className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>{vertical.equipmentOrFocus.length} Lab Testbeds</span>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* =========================================================
-              3. NAVIGATION TABS
-              ========================================================= */}
-          <div className="px-5 sm:px-8 py-2.5 bg-slate-900/95 border-b border-slate-800/80 overflow-x-auto shrink-0 flex items-center gap-1.5">
-            <button
-              onClick={() => setActiveTab('overview')}
-              className={cn(
-                "px-3.5 py-1.5 rounded-xl font-semibold text-xs sm:text-sm transition-all duration-200 flex items-center gap-1.5 whitespace-nowrap",
-                activeTab === 'overview'
-                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30 font-bold"
-                  : "text-slate-400 hover:text-white hover:bg-slate-800/70"
-              )}
-            >
-              <BookOpen className="w-4 h-4" />
-              <span>Overview</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('vision-mission')}
-              className={cn(
-                "px-3.5 py-1.5 rounded-xl font-semibold text-xs sm:text-sm transition-all duration-200 flex items-center gap-1.5 whitespace-nowrap",
-                activeTab === 'vision-mission'
-                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30 font-bold"
-                  : "text-slate-400 hover:text-white hover:bg-slate-800/70"
-              )}
-            >
-              <Target className="w-4 h-4" />
-              <span>Vision & Mission</span>
-            </button>
-
-            {vertical.overallOutcome && (
-              <button
-                onClick={() => setActiveTab('outcomes')}
-                className={cn(
-                  "px-3.5 py-1.5 rounded-xl font-semibold text-xs sm:text-sm transition-all duration-200 flex items-center gap-1.5 whitespace-nowrap",
-                  activeTab === 'outcomes'
-                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30 font-bold"
-                    : "text-slate-400 hover:text-white hover:bg-slate-800/70"
-                )}
-              >
-                <GraduationCap className="w-4 h-4" />
-                <span>Expected Outcomes</span>
-              </button>
-            )}
-
-            {((vertical.keyAreas && vertical.keyAreas.length > 0) || (vertical.equipmentOrFocus && vertical.equipmentOrFocus.length > 0)) && (
-              <button
-                onClick={() => setActiveTab('focus')}
-                className={cn(
-                  "px-3.5 py-1.5 rounded-xl font-semibold text-xs sm:text-sm transition-all duration-200 flex items-center gap-1.5 whitespace-nowrap",
-                  activeTab === 'focus'
-                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30 font-bold"
-                    : "text-slate-400 hover:text-white hover:bg-slate-800/70"
-                )}
-              >
-                <Layers className="w-4 h-4" />
-                <span>Domains & Labs</span>
-              </button>
-            )}
-
-            {vertical.verifiedAchievement && (
-              <button
-                onClick={() => setActiveTab('achievement')}
-                className={cn(
-                  "px-3.5 py-1.5 rounded-xl font-semibold text-xs sm:text-sm transition-all duration-200 flex items-center gap-1.5 whitespace-nowrap ml-auto",
-                  activeTab === 'achievement'
-                    ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/30 font-bold"
-                    : "text-emerald-400 hover:text-emerald-300 hover:bg-emerald-950/40 border border-emerald-500/30"
-                )}
-              >
-                <Award className="w-4 h-4" />
-                <span>MoU & Recognition</span>
-              </button>
+              </div>
             )}
 
             {/* Overall Outcome */}
@@ -273,7 +184,7 @@ export const VerticalDetailsModal: React.FC<VerticalDetailsModalProps> = ({
             </div>
           </div>
 
-          {/* Footer */}
+          {/* Modal Footer */}
           <div className="px-6 py-4 border-t border-slate-800 bg-slate-900/90 flex justify-end">
             <Button
               onClick={onClose}
