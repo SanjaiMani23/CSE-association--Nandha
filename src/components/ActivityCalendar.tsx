@@ -95,20 +95,19 @@ export const ActivityCalendar: React.FC<ActivityCalendarProps> = ({ previewOnly 
 
   // If previewOnly is true (used on Home Page)
   if (previewOnly) {
-    const previewMilestones = calendarMilestones.slice(0, 2);
     return (
-      <div className="w-full space-y-8">
+      <div className="w-full">
         {/* Banner with Official Image Preview teaser */}
-        <div className="relative rounded-2xl overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950/70 to-slate-900 border border-indigo-500/30 p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+        <div className="relative rounded-2xl overflow-hidden bg-[#F0F5FF] border border-[#E0EAFF] p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xs">
           <div className="space-y-2 max-w-xl text-center md:text-left">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/40">
-              <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#E0E7FF] text-[#4F46E5] border border-[#C7D2FE]">
+              <Sparkles className="w-3.5 h-3.5 text-[#4F46E5]" />
               Academic Year 2026–2027 Official Calendar
             </div>
-            <h3 className="text-2xl md:text-3xl font-extrabold text-white">
+            <h3 className="text-2xl md:text-3xl font-extrabold text-slate-900">
               Department Activity Roadmap
             </h3>
-            <p className="text-sm text-slate-300 leading-relaxed">
+            <p className="text-sm text-slate-600 leading-relaxed">
               From Association Launch and SIH Hackathons to National Symposium Synetics and Annual Days. Explore the complete 8-month serpentine schedule.
             </p>
           </div>
@@ -117,98 +116,21 @@ export const ActivityCalendar: React.FC<ActivityCalendarProps> = ({ previewOnly 
             <Button
               onClick={() => setIsPosterModalOpen(true)}
               variant="outline"
-              className="bg-slate-900/80 hover:bg-slate-800 text-indigo-300 border-indigo-500/50 hover:border-indigo-400 gap-2"
+              className="bg-white hover:bg-slate-50 text-[#4F46E5] border border-slate-300 hover:border-slate-400 gap-2 font-semibold rounded-xl px-4 py-2 text-sm shadow-2xs"
             >
-              <Eye className="w-4 h-4" />
+              <Eye className="w-4 h-4 text-[#4F46E5]" />
               <span>View Official Poster</span>
             </Button>
             <a
               href="/images/department-activity-calendar.jpg"
               download="Nandha-CSE-Activity-Calendar-2026-27.jpg"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/25 transition-all"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold bg-[#4F46E5] hover:bg-[#4338CA] text-white shadow-sm transition-all"
             >
               <Download className="w-4 h-4" />
               <span>Download Poster</span>
             </a>
           </div>
         </div>
-
-        {/* 2-Milestone Preview Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {previewMilestones.map((m) => (
-            <div
-              key={m.number}
-              className="bg-slate-900/80 backdrop-blur-sm border border-slate-700/80 hover:border-indigo-500/50 rounded-2xl p-6 transition-all shadow-lg"
-            >
-              <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-800">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-slate-950 border-2 border-indigo-400 flex items-center justify-center font-bold text-white text-base">
-                    {m.number}
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-bold text-white tracking-wide">
-                      {m.rawMonth}
-                    </h4>
-                    <p className="text-xs text-indigo-300 font-medium">
-                      {m.theme}
-                    </p>
-                  </div>
-                </div>
-                <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">
-                  {m.events.length} Events
-                </span>
-              </div>
-
-              <div className="space-y-3">
-                {m.events.slice(0, 3).map((event) => (
-                  <div
-                    key={event.id}
-                    onClick={() => setSelectedEvent(event)}
-                    className="p-3 rounded-xl bg-slate-950/60 hover:bg-indigo-950/40 border border-slate-800/80 hover:border-indigo-500/40 cursor-pointer transition-all flex items-center justify-between group"
-                  >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <span className="w-16 px-2 py-1 rounded-md text-xs font-bold text-center bg-slate-800 text-indigo-300 border border-slate-700 shrink-0">
-                        {event.date}
-                      </span>
-                      <span className="text-sm font-medium text-slate-200 group-hover:text-white truncate">
-                        {event.title}
-                      </span>
-                    </div>
-                    <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-indigo-400 transform group-hover:translate-x-0.5 transition-transform shrink-0 ml-2" />
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* 4 Pillars Legend Bar */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-          {calendarCategories.map((cat) => (
-            <div
-              key={cat.name}
-              className={cn(
-                'p-3.5 rounded-xl border flex items-center gap-3 bg-slate-900/60 backdrop-blur-sm',
-                cat.borderClass
-              )}
-            >
-              <div className={cn('p-2 rounded-lg shrink-0', cat.bgClass, cat.textClass)}>
-                {getCategoryIcon(cat.name, 'w-4 h-4')}
-              </div>
-              <div className="min-w-0">
-                <div className={cn('text-xs font-bold leading-tight truncate', cat.textClass)}>
-                  {cat.name}
-                </div>
-                <div className="text-[11px] text-slate-400 truncate">
-                  {allCalendarEvents.filter(e => e.category === cat.name).length} Activities
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Detail Modal */}
-        {renderDetailModal()}
 
         {/* Poster Lightbox Modal */}
         {renderPosterLightbox()}

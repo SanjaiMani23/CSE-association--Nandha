@@ -84,7 +84,7 @@ const Footer = () => {
                 </svg>
               </div>
               <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-[#B5A8D5]">
-                Tech Matrix
+                CSE Association
               </h3>
             </div>
             <motion.p

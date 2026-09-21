@@ -269,39 +269,41 @@ const FloatingTechElements = () => {
         ))}
       </div>
 
-      {/* Floating tech icons - now larger and more numerous */}
-      {[...techIcons, ...techIcons].map((techIcon, i) => {
-        const size = Math.random() * 30 + 24 // Larger size range (24-54px)
-        return (
-          <motion.div
-            key={i}
-            className="absolute flex items-center justify-center"
-            style={{
-              width: `${size}px`,
-              height: `${size}px`,
-              color: techIcon.color,
-              opacity: 0.6,
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [0, (Math.random() - 0.5) * 60],
-              x: [0, (Math.random() - 0.5) * 60],
-              rotate: [0, 180, 360],
-              opacity: [0.4, 0.8, 0.4],
-              scale: [1, 1.2, 1]
-            }}
-            transition={{
-              duration: 15 + Math.random() * 15,
-              repeat: Infinity,
-              ease: 'easeInOut',
-              delay: Math.random() * 3,
-            }}
-          >
-            {techIcon.icon}
-          </motion.div>
-        )
-      })}
+      {/* Floating tech icons - safely contained within safe bounds */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...techIcons, ...techIcons].map((techIcon, i) => {
+          const size = Math.random() * 24 + 20 // Sized cleanly
+          return (
+            <motion.div
+              key={i}
+              className="absolute flex items-center justify-center pointer-events-none"
+              style={{
+                width: `${size}px`,
+                height: `${size}px`,
+                color: techIcon.color,
+                opacity: 0.5,
+                top: `${Math.random() * 84 + 8}%`,
+                left: `${Math.random() * 84 + 8}%`,
+              }}
+              animate={{
+                y: [0, (Math.random() - 0.5) * 30],
+                x: [0, (Math.random() - 0.5) * 30],
+                rotate: [0, 180, 360],
+                opacity: [0.3, 0.7, 0.3],
+                scale: [1, 1.1, 1]
+              }}
+              transition={{
+                duration: 15 + Math.random() * 15,
+                repeat: Infinity,
+                ease: 'easeInOut',
+                delay: Math.random() * 3,
+              }}
+            >
+              {techIcon.icon}
+            </motion.div>
+          )
+        })}
+      </div>
 
       {/* Animated connection lines */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-10">
@@ -347,7 +349,7 @@ const TechWave = () => {
 
   return (
     <motion.div 
-      className="absolute bottom-0 left-0 right-0 h-32 overflow-hidden"
+      className="absolute bottom-0 left-0 right-0 h-32 overflow-hidden pointer-events-none max-w-full"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 1.5, duration: 1 }}
@@ -376,10 +378,10 @@ const TechWave = () => {
       {techIcons.map((icon, i) => (
         <motion.div
           key={i}
-          className="absolute text-2xl md:text-3xl"
+          className="absolute text-2xl md:text-3xl pointer-events-none"
           style={{
             bottom: '10%',
-            left: `${Math.random() * 100}%`,
+            left: `${Math.random() * 88 + 6}%`,
           }}
           initial={{ y: 20, opacity: 0 }}
           animate={{ 
@@ -403,10 +405,10 @@ const TechWave = () => {
 
 export default function PageLayout({ children, className }: PageLayoutProps) {
   return (
-    <div className={cn("flex flex-col min-h-screen relative overflow-hidden bg-gray-900 text-white", className)}>
+    <div className={cn("flex flex-col min-h-screen w-full max-w-full relative overflow-x-hidden bg-gray-900 text-white", className)}>
       <Navbar />
       <TechBackground />
-      <main className="relative z-10 flex-grow pt-24">
+      <main className="relative z-10 flex-grow pt-24 w-full max-w-full overflow-x-hidden">
         {children}
       </main>
       <TechWave />

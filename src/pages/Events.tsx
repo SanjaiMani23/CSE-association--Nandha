@@ -151,7 +151,7 @@ export const Events: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Actions (Brochure & Register) */}
+                {/* Actions (Official Poster & Archive) */}
                 <div className="p-6 pt-0 flex flex-col sm:flex-row gap-3">
                   {event.brochure && (
                     <Button
@@ -160,24 +160,11 @@ export const Events: React.FC = () => {
                       className="flex-1 border-slate-700 text-slate-200 hover:text-white hover:bg-slate-700/60"
                     >
                       <FileText className="w-4 h-4 mr-2 text-indigo-400" />
-                      View Brochure
+                      View Official Poster
                     </Button>
                   )}
 
-                  {event.registrationLink && event.category !== 'completed' ? (
-                    <Button
-                      asChild
-                      className="flex-1 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-medium shadow-md"
-                    >
-                      <a
-                        href={event.registrationLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Register <ExternalLink className="w-4 h-4 ml-1.5" />
-                      </a>
-                    </Button>
-                  ) : event.driveLink ? (
+                  {event.driveLink ? (
                     <Button
                       asChild
                       variant="outline"

@@ -1,34 +1,28 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { Menu, X, ShieldCheck, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-const navItems = [
-  { path: '/', label: 'Home' },
-  { path: '/contact', label: 'Contact / Feedback' },
-];
-
-const aboutDropdownItems = [
-  { path: '/events', label: 'Event' },
-  { path: '/events#calendar', label: 'Activity Calendar' },
-  { path: '/#verticals', label: 'Vertical' },
-  { path: '/team', label: 'Faculty & Coordinators' },
-  { path: '/achievements', label: 'Achievements' },
-  { path: '/gallery', label: 'Gallery' },
-];
-
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isAboutOpen, setIsAboutOpen] = useState(false);
-  const [isMobileAboutOpen, setIsMobileAboutOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const moreRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
-    setIsMobileAboutOpen(false);
   };
+
+  // Track scroll for header background effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Scroll to top on route change unless hash is present
   useEffect(() => {
@@ -37,185 +31,215 @@ const Navbar = () => {
     }
   }, [location.pathname, location.hash]);
 
-  // Close dropdown on route change
+  // Close mobile menu on route change
   useEffect(() => {
-    setIsAboutOpen(false);
     setIsOpen(false);
-    setIsMobileAboutOpen(false);
+    setMoreOpen(false);
   }, [location.pathname, location.hash]);
 
-  // Close dropdown when clicking outside
+  // Close "More" dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsAboutOpen(false);
+    const handleClickOutside = (e: MouseEvent) => {
+      if (moreRef.current && !moreRef.current.contains(e.target as Node)) {
+        setMoreOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Determine if About is active
-  const isAboutActive = aboutDropdownItems.some(item => 
-    location.pathname === item.path.split('#')[0] && location.pathname !== '/'
+  // Items shown directly in the desktop navbar
+  const primaryNav = [
+    { to: '/', label: 'Home' },
+    { to: '/events', label: 'Events' },
+    { to: '/verticals', label: 'Verticals' },
+    { to: '/achievements', label: 'Achievements' },
+    { to: '/gallery', label: 'Gallery' },
+  ];
+
+  // Items inside "More" dropdown on desktop
+  const moreNav = [
+    { to: '/events#calendar', label: 'Activity Calendar' },
+    { to: '/team', label: 'Team' },
+    { to: '/contact', label: 'Contact / Feedback' },
+  ];
+
+  // All items flat for mobile
+  const mobileNav = [
+    { to: '/', label: 'Home' },
+    { to: '/events', label: 'Events' },
+    { to: '/events#calendar', label: 'Activity Calendar' },
+    { to: '/verticals', label: 'Verticals' },
+    { to: '/team', label: 'Team' },
+    { to: '/achievements', label: 'Achievements' },
+    { to: '/gallery', label: 'Gallery' },
+    { to: '/contact', label: 'Contact / Feedback' },
+  ];
+
+  const isMoreActive = moreNav.some(
+    (item) => location.pathname === item.to.split('#')[0]
   );
 
   return (
-    <nav className={cn(
-      "fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#7A73D1] to-[#211C84]",
-      "shadow-lg shadow-[#4D55CC]/30 backdrop-blur-md"
-    )}>
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-20 md:h-24">
-          {/* Logo / Branding */}
-          <Link to="/" className="flex items-center space-x-3 group">
-            <img 
-              src="/logo/logocse.png" 
-              alt="CSE Department Logo" 
-              className="h-14 md:h-18 w-auto transition-all duration-300 group-hover:scale-105"
+    <nav
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+        scrolled
+          ? "shadow-xl shadow-black/20"
+          : ""
+      )}
+      style={{
+        background: scrolled
+          ? 'rgba(15, 10, 50, 0.55)'
+          : 'rgba(25, 18, 80, 0.45)',
+        backdropFilter: 'blur(24px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+      }}
+    >
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="flex justify-between items-center h-16 md:h-[68px]">
+
+          {/* ── LEFT: Logo + Branding ── */}
+          <Link to="/" className="flex items-center gap-3 group shrink-0">
+            <img
+              src="/logo/logocse.png"
+              alt="CSE Department Logo"
+              className="h-10 md:h-12 w-auto transition-transform duration-300 group-hover:scale-105"
             />
-            <div className="text-white font-bold leading-tight">
-              <span className="block text-xl md:text-2xl tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-white to-[#B5A8D5]">
+            <div className="leading-tight">
+              <span className="block text-base md:text-lg font-bold tracking-wide text-white">
                 Nandha
               </span>
-              <span className="block text-[10px] md:text-xs text-white/90 font-medium tracking-wider">
-                CSE Association 2026–27
+              <span className="block text-[10px] md:text-[11px] text-white/70 font-medium tracking-wider">
+                CSE Association
               </span>
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex lg:items-center lg:space-x-1">
-            {/* Home Link */}
-            <NavLink to="/" currentPath={location.pathname}>Home</NavLink>
+          {/* ── CENTER-RIGHT: Desktop Navigation ── */}
+          <div className="hidden lg:flex items-center gap-0.5">
+            {primaryNav.map((item) => (
+              <NavLink key={item.to} to={item.to} currentPath={location.pathname}>
+                {item.label}
+              </NavLink>
+            ))}
 
-            {/* About Dropdown */}
-            <div ref={dropdownRef} className="relative">
+            {/* ── More Dropdown ── */}
+            <div className="relative" ref={moreRef}>
               <button
-                onClick={() => setIsAboutOpen(!isAboutOpen)}
+                onClick={() => setMoreOpen(!moreOpen)}
                 className={cn(
-                  "px-3 py-2 text-xs md:text-sm font-semibold tracking-wide transition-all duration-300 flex items-center gap-1",
-                  isAboutActive ? "text-white font-bold" : "text-white/85 hover:text-white"
+                  "relative flex items-center gap-1 px-3 py-2 text-[13px] font-semibold tracking-wide transition-all duration-300 whitespace-nowrap rounded-md",
+                  isMoreActive
+                    ? "text-white"
+                    : "text-white/80 hover:text-white"
                 )}
               >
-                About
-                <ChevronDown className={cn(
-                  "w-3.5 h-3.5 transition-transform duration-200",
-                  isAboutOpen && "rotate-180"
-                )} />
+                More
+                <ChevronDown
+                  className={cn(
+                    "w-3.5 h-3.5 transition-transform duration-200",
+                    moreOpen && "rotate-180"
+                  )}
+                />
+                {isMoreActive && (
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-[2px] bg-white/90 rounded-full" />
+                )}
               </button>
 
-              {/* Dropdown Menu */}
-              <div className={cn(
-                "absolute left-0 top-full mt-1 w-56 bg-white/95 backdrop-blur-lg rounded-xl shadow-xl shadow-slate-900/20 border border-slate-200/80 transition-all duration-200 origin-top-left",
-                isAboutOpen
-                  ? "opacity-100 scale-100 visible translate-y-0"
-                  : "opacity-0 scale-95 invisible -translate-y-1"
-              )}>
-                <ul className="py-1.5">
-                  {aboutDropdownItems.map((item) => (
-                    <li key={item.path + item.label}>
+              {/* Dropdown panel */}
+              <div
+                className={cn(
+                  "absolute right-0 top-full mt-2 w-52 rounded-xl border border-white/10 overflow-hidden transition-all duration-200 origin-top-right",
+                  moreOpen
+                    ? "opacity-100 scale-100 pointer-events-auto"
+                    : "opacity-0 scale-95 pointer-events-none"
+                )}
+                style={{
+                  background: 'rgba(15, 10, 50, 0.5)',
+                  backdropFilter: 'blur(28px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(28px) saturate(180%)',
+                  boxShadow: '0 16px 48px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06)',
+                }}
+              >
+                <div className="py-2 px-1.5">
+                  {moreNav.map((item) => {
+                    const isActive = location.pathname === item.to.split('#')[0] &&
+                      (item.to.includes('#')
+                        ? location.hash === '#' + item.to.split('#')[1]
+                        : true);
+                    return (
                       <Link
-                        to={item.path}
-                        onClick={() => setIsAboutOpen(false)}
+                        key={item.to}
+                        to={item.to}
+                        onClick={() => setMoreOpen(false)}
                         className={cn(
-                          "block px-4 py-2.5 text-sm font-medium transition-colors duration-150",
-                          (location.pathname === item.path.split('#')[0] && location.hash === (item.path.split('#')[1] ? '#' + item.path.split('#')[1] : ''))
-                            ? "text-indigo-700 bg-indigo-50 font-semibold"
-                            : "text-slate-700 hover:bg-slate-100 hover:text-indigo-600"
+                          "block px-3 py-2.5 text-[13px] font-medium rounded-lg transition-colors duration-200",
+                          isActive
+                            ? "text-white bg-white/10"
+                            : "text-white/80 hover:text-white hover:bg-white/8"
                         )}
                       >
                         {item.label}
                       </Link>
-                    </li>
-                  ))}
-                </ul>
+                    );
+                  })}
+                </div>
               </div>
             </div>
-
-            {/* Contact / Feedback */}
-            <NavLink to="/contact" currentPath={location.pathname}>
-              Contact / Feedback
-            </NavLink>
           </div>
 
-          {/* Mobile Menu Controls */}
-          <div className="lg:hidden flex items-center gap-2">
-            <Button 
-              variant="ghost" 
+          {/* ── Mobile Menu Toggle ── */}
+          <div className="lg:hidden">
+            <Button
+              variant="ghost"
               size="icon"
               onClick={toggleMenu}
-              className="text-white hover:bg-white/20 rounded-full transition-all"
+              className="text-white hover:bg-white/10 rounded-lg transition-all h-9 w-9"
             >
-              {isOpen ? <X size={26} strokeWidth={2.5} /> : <Menu size={26} strokeWidth={2.5} />}
+              {isOpen ? (
+                <X size={22} strokeWidth={2.5} />
+              ) : (
+                <Menu size={22} strokeWidth={2.5} />
+              )}
             </Button>
           </div>
         </div>
 
-        {/* Mobile Menu */}
-        <div 
+        {/* ── Mobile Menu ── */}
+        <div
           className={cn(
-            "lg:hidden absolute left-0 right-0 bg-gradient-to-b from-[#7A73D1] to-[#211C84]",
-            "transition-all duration-300 ease-in-out overflow-hidden shadow-xl",
-            isOpen ? "max-h-[80vh] opacity-100 py-4 overflow-y-auto" : "max-h-0 opacity-0 py-0"
+            "lg:hidden absolute left-0 right-0 transition-all duration-300 ease-in-out overflow-hidden",
+            isOpen
+              ? "max-h-[80vh] opacity-100 overflow-y-auto"
+              : "max-h-0 opacity-0"
           )}
-          style={{ top: '100%' }}
+          style={{
+            top: '100%',
+            background: 'rgba(15, 10, 50, 0.6)',
+            backdropFilter: 'blur(28px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(28px) saturate(180%)',
+            borderTop: isOpen ? '1px solid rgba(255,255,255,0.08)' : 'none',
+            boxShadow: isOpen ? '0 20px 50px rgba(0,0,0,0.45)' : 'none',
+          }}
         >
-          <div className="flex flex-col divide-y divide-white/15 px-2">
-            {/* Home */}
-            <MobileNavLink to="/" onClick={toggleMenu} isActive={location.pathname === '/'}>
-              Home
-            </MobileNavLink>
-
-            {/* About Dropdown in Mobile */}
-            <div>
-              <button
-                onClick={() => setIsMobileAboutOpen(!isMobileAboutOpen)}
-                className={cn(
-                  "w-full group px-6 py-3.5 text-base font-semibold tracking-wide transition-all duration-200 flex items-center justify-between rounded-lg",
-                  isAboutActive
-                    ? "text-white bg-white/20"
-                    : "text-white/90 hover:bg-white/10 hover:text-white"
-                )}
-              >
-                <span className="ml-2">About</span>
-                <ChevronDown className={cn(
-                  "w-4 h-4 transition-transform duration-200",
-                  isMobileAboutOpen && "rotate-180"
-                )} />
-              </button>
-              <div className={cn(
-                "overflow-hidden transition-all duration-200",
-                isMobileAboutOpen ? "max-h-[32rem] opacity-100" : "max-h-0 opacity-0"
-              )}>
-                <div className="pl-6 pb-2 space-y-0.5 mt-1">
-                  {aboutDropdownItems.map((item) => (
-                    <Link
-                      key={item.path + item.label}
-                      to={item.path}
-                      onClick={toggleMenu}
-                      className={cn(
-                        "block px-4 py-2.5 text-sm font-medium rounded-lg transition-colors",
-                        (location.pathname === item.path.split('#')[0] && location.hash === (item.path.split('#')[1] ? '#' + item.path.split('#')[1] : ''))
-                          ? "text-white bg-white/20"
-                          : "text-white/80 hover:text-white hover:bg-white/10"
-                      )}
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Contact / Feedback */}
-            <MobileNavLink 
-              to="/contact"
-              onClick={toggleMenu}
-              isActive={location.pathname === '/contact'}
-            >
-              Contact / Feedback
-            </MobileNavLink>
+          <div className="flex flex-col py-3 px-3 space-y-0.5">
+            {mobileNav.map((item) => {
+              const isActive =
+                location.pathname === item.to.split('#')[0] &&
+                (!item.to.includes('#') || location.hash === '#' + item.to.split('#')[1]);
+              return (
+                <MobileNavLink
+                  key={item.to}
+                  to={item.to}
+                  onClick={toggleMenu}
+                  isActive={isActive}
+                >
+                  {item.label}
+                </MobileNavLink>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -223,6 +247,7 @@ const Navbar = () => {
   );
 };
 
+/* ── Desktop Nav Link ── */
 interface NavLinkProps {
   to: string;
   currentPath: string;
@@ -232,25 +257,27 @@ interface NavLinkProps {
 const NavLink = ({ to, currentPath, children }: NavLinkProps) => {
   const isActive = currentPath === to.split('#')[0];
   return (
-    <Link 
-      to={to} 
+    <Link
+      to={to}
       className={cn(
-        "relative px-3 py-2 text-xs md:text-sm font-semibold tracking-wide transition-all duration-300 group whitespace-nowrap",
-        isActive 
-          ? "text-white font-bold" 
-          : "text-white/85 hover:text-white"
+        "relative px-3 py-2 text-[13px] font-semibold tracking-wide transition-all duration-300 group whitespace-nowrap rounded-md",
+        isActive
+          ? "text-white"
+          : "text-white/80 hover:text-white"
       )}
     >
       {children}
+      {/* Active underline */}
       {isActive ? (
-        <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-4/5 h-[3px] bg-white rounded-full"></span>
+        <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-[2px] bg-white/90 rounded-full" />
       ) : (
-        <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-[2px] bg-white rounded-full group-hover:w-4/5 transition-all duration-300"></span>
+        <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-white/60 rounded-full group-hover:w-5 transition-all duration-300" />
       )}
     </Link>
   );
 };
 
+/* ── Mobile Nav Link ── */
 interface MobileNavLinkProps {
   to: string;
   onClick: () => void;
@@ -258,32 +285,27 @@ interface MobileNavLinkProps {
   children: React.ReactNode;
 }
 
-const MobileNavLink = ({ 
-  to, 
-  onClick, 
-  isActive, 
-  children 
+const MobileNavLink = ({
+  to,
+  onClick,
+  isActive,
+  children,
 }: MobileNavLinkProps) => {
   return (
-    <Link 
-      to={to} 
+    <Link
+      to={to}
       onClick={onClick}
       className={cn(
-        "group px-6 py-3.5 text-base font-semibold tracking-wide transition-all duration-200 flex items-center rounded-lg",
-        isActive ? "text-white bg-white/20" : "text-white/90 hover:bg-white/10 hover:text-white"
+        "px-4 py-3 text-sm font-semibold tracking-wide transition-all duration-200 flex items-center rounded-xl",
+        isActive
+          ? "text-white bg-white/10"
+          : "text-white/85 hover:bg-white/8 hover:text-white"
       )}
     >
       {isActive && (
-        <span className="w-1.5 h-4 bg-white rounded-full mr-2.5 animate-pulse"></span>
+        <span className="w-1 h-4 bg-white/80 rounded-full mr-3 shrink-0" />
       )}
-      <span className={cn("transition-all", isActive ? "ml-1" : "ml-2")}>
-        {children}
-      </span>
-      {!isActive && (
-        <span className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs">
-          →
-        </span>
-      )}
+      <span>{children}</span>
     </Link>
   );
 };

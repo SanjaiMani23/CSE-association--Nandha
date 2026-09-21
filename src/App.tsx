@@ -11,6 +11,7 @@ import Contact from "./pages/Contact";
 import Events from "./pages/Events";
 import Achievements from "./pages/Achievements";
 import Gallery from "./pages/Gallery";
+import Verticals from "./pages/Verticals";
 import CoordinatorDashboard from "./pages/CoordinatorDashboard";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/events" element={<Events />} />
           <Route path="/achievements" element={<Achievements />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/verticals" element={<Verticals />} />
           <Route path="/grievances" element={<Grievances />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/coordinator" element={<CoordinatorDashboard />} />

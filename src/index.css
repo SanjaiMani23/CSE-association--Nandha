@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Orbitron:wght@400;500;700&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    --background: 240 6% 10%;
+    --background: 0 0% 80%; /* #CCCCCC */
     --foreground: 210 40% 98%;
     --card: 240 5% 12%;
     --card-foreground: 210 40% 98%;
@@ -69,20 +69,46 @@
 }
 
 @layer base {
-  * {
+  *, *::before, *::after {
+    box-sizing: border-box;
     @apply border-border;
   }
+  html {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    scrollbar-gutter: stable;
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+  }
   body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
     @apply bg-background text-foreground;
-    font-family: 'Inter', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 400;
     line-height: 1.6;
   }
+  #root {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+  img,
+  video,
+  svg {
+    max-width: 100%;
+  }
   h1, h2, h3, h4 {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     @apply font-bold tracking-tighter;
     line-height: 1.2;
-    letter-spacing: -0.05em;
+    letter-spacing: -0.03em;
   }
   h1 {
     @apply text-4xl md:text-5xl lg:text-6xl;
@@ -98,16 +124,10 @@
     @apply text-xl md:text-2xl lg:text-3xl;
   }
   p {
-    font-family: 'Inter', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     @apply text-base md:text-lg;
     color: hsl(var(--muted-foreground));
   }
-}
-
-/* Enhanced Scroll Effects */
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 6rem;
 }
 
 ::-webkit-scrollbar {

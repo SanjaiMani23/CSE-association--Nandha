@@ -1,7 +1,14 @@
 "use client";
 
+import React from "react";
 import PageLayout from "@/components/PageLayout";
 import { motion } from "framer-motion";
+import {
+  officeBearersData,
+  executiveMembersData,
+  coreMembersData,
+  allOfFrameData
+} from "@/data/team";
 
 // Color scheme matching the home page
 const COLORS = {
@@ -170,6 +177,7 @@ const Team = () => {
             </motion.div>
           </motion.div>
 
+          {/* 1. Office Bearers Section */}
           <motion.div 
             className="mb-24"
             initial={{ opacity: 0, y: 20 }}
@@ -179,23 +187,18 @@ const Team = () => {
           >
             <SectionTitle title="Office Bearers" />
             <motion.div 
-              className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+              className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.8, staggerChildren: 0.1 }}
+              transition={{ duration: 0.8, staggerChildren: 0.05 }}
               viewport={{ once: true }}
             >
-              {[
-                { name: "Mr. G. Mohana Prasath", role: "Secretary", year: "IV Year", image: "Office bearers/Mohana prasath.jpg  " },
-                { name: "Mr. C. Udhay Karthik", role: "Treasurer", year: "IV Year", image: "Office bearers/Udhay Karthik.jpg" },
-                { name: "Mr. M. Kavikumar", role: "Joint Secretary", year: "III Year", image: "Office bearers/kavikumar.jpg" },
-                { name: "Mr. S. Balahariharan", role: "Joint Treasurer", year: "III Year", image: "Office bearers/Balahariharan.jpg" },
-              ].map((member, index) => (
+              {officeBearersData.map((member, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  transition={{ duration: 0.5, delay: index * 0.05 }}
                   viewport={{ once: true }}
                   className="h-full"
                 >
@@ -210,6 +213,7 @@ const Team = () => {
             </motion.div>
           </motion.div>
 
+          {/* 2. Executive Members Section */}
           <motion.div 
             className="mb-24"
             initial={{ opacity: 0, y: 20 }}
@@ -219,42 +223,13 @@ const Team = () => {
           >
             <SectionTitle title="Executive Members" />
             <motion.div 
-              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-6"
+              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              transition={{ duration: 1, staggerChildren: 0.05 }}
+              transition={{ duration: 0.8, staggerChildren: 0.05 }}
               viewport={{ once: true }}
             >
-              {[
-                { name: "Mr. M. Dhilip", year: "IV Year", image: "/office/Dhilip.jpg" },
-                { name: "Ms. M. Hanushree", year: "IV Year", image: "/office/Hanushree.jpg" },
-                { name: "Mr. K. Rumesh Kumaran", year: "IV Year", image: "/office/Rumesh.jpg" },
-                { name: "Ms. T. Saarumathi", year: "IV Year", image: "/office/Saarumathi.jpg" },
-                { name: "Ms. R. Abinaya", year: "III Year", image: "office/1745938528340.jpg" },
-                { name: "Mr. S. S. Arunesh", year: "III Year", image: "/office/Arunesh.jpg" },
-                { name: "Mr. M. S. Phurnes", year: "III Year", image: "/office/Phurnes.jpg" },
-                { name: "Ms. A. K. Nandhana", year: "III Year", image: "/office/Nandhana.jpg" },
-                { name: "Ms. S. Subaranjani", year: "III Year", image: "/office/Subaranjani.jpg" },
-                { name: "Mr. Santhosh Dinakaran", year: "III Year", image: "/office/Santhosh.jpg" },
-                { name: "Mr. P. Y. Ashwin Uvraj", year: "II Year", image: "/office/Ashwin.jpg" },
-                { name: "Ms. A. J. Deshika", year: "II Year", image: "/office/Deshika.jpg" },
-                { name: "Mr. B. Harish Kumar", year: "II Year", image: "/office/Harish.jpg" },
-                { name: "Ms. T. L. Jana Sri", year: "II Year", image: "/office/Jana%20Sri.jpg" },
-                { name: "Mr. M. Pradeesh", year: "II Year", image: "/office/Pradeesh.jpg" },
-                { name: "Mr. R. Rupanarayanan", year: "II Year", image: "/office/Rupan.jpg" },
-                { name: "Ms. R. Shamiksha", year: "II Year", image: "/office/Shamiksha.jpg" },
-                { name: "Mr. R. Sree Nandhu", year: "II Year", image: "/office/Sree%20Nandhu.jpg" },
-                // New members added here
-                { name: "Ms. Rithika S", year: "I Year", image: "/office/ritika.jpg" },
-                { name: "Mr. Manish K", year: "I Year", image: "/office/Manish.jpg" },
-                { name: "Ms. Sruthi S", year: "I Year", image: "/office/Sruthi.jpg" },
-                { name: "Ms. H. Lithika Shree", year: "I Year", image: "/office/litika.jpg" },
-                { name: "Ms. R. Dhanu Shree", year: "I Year", image: "/office/dhanu.jpg" },
-                { name: "Ms. S. Oviya", year: "I Year", image: "/office/Oviya.jpg" },
-                // Additional new members
-                { name: "Mr. Harish A", year: "I Year", image: "/office/image.png" },
-                { name: "Mr. Someshkumar M", year: "I Year", image: "/office/WhatsApp Image 2025-09-28 at 07.40.30_c47c1417.jpg" }
-              ].map((member, index) => (
+              {executiveMembersData.map((member, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
@@ -265,6 +240,7 @@ const Team = () => {
                 >
                   <MemberCard
                     name={member.name}
+                    role={member.role}
                     year={member.year}
                     image={member.image}
                   />
@@ -273,6 +249,7 @@ const Team = () => {
             </motion.div>
           </motion.div>
 
+          {/* 3. Core Members Section */}
           <motion.div 
             className="mb-24"
             initial={{ opacity: 0, y: 20 }}
@@ -282,27 +259,13 @@ const Team = () => {
           >
             <SectionTitle title="Core Members" />
             <motion.div 
-              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"
+              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-6 max-w-5xl mx-auto"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              transition={{ duration: 1, staggerChildren: 0.05 }}
+              transition={{ duration: 0.8, staggerChildren: 0.05 }}
               viewport={{ once: true }}
             >
-              {[
-                { name: "Ms. B. Sharmila", year: "IV Year", image: "/core/Sharmila.jpg" },
-                { name: "Mr. S. R. Chanthuru", year: "IV Year", image: "/core/Chanthuru.jpg" },
-                { name: "Mr. R. Dharun Raj", year: "IV Year", image: "/core/Dharun Raj.jpg" },
-                { name: "Ms. V. Shalini", year: "IV Year", image: "/core/Shalini V.jpg" },
-                { name: "Mr. A. Mohamed Abu Bakkar Siddiq", year: "III Year", image: "/core/Abu Bakkar.jpg" },
-                { name: "Mr. C. Vishal", year: "III Year", image: "/core/Vishal.jpg" },
-                // Nakshatra removed from here
-                { name: "Mr. A. Manibharaathi", year: "III Year", image: "/core/Manibharaathi.jpg" },
-                { name: "Ms. S. Dhivya", year: "III Year", image: "/core/dhivya.jpg" },
-                { name: "Ms. S. Aashiqa Fathima", year: "II Year", image: "/core/Aashiqa.jpg" },
-                { name: "Mr. U. Mahendran", year: "II Year", image: "/core/Mahendran.jpg" },
-                { name: "Mr. Prithiv Krishna", year: "II Year", image: "/core/Prithiv.jpg" },
-                { name: "Ms. E. Subitcha", year: "II Year", image: "/core/Subitcha.jpg" }
-              ].map((member, index) => (
+              {coreMembersData.map((member, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
@@ -313,6 +276,43 @@ const Team = () => {
                 >
                   <MemberCard
                     name={member.name}
+                    role={member.role}
+                    year={member.year}
+                    image={member.image}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.div>
+
+          {/* 4. All of Frame Section */}
+          <motion.div 
+            className="mb-24"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <SectionTitle title="All of Frame" />
+            <motion.div 
+              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.8, staggerChildren: 0.05 }}
+              viewport={{ once: true }}
+            >
+              {allOfFrameData.map((member, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.05 }}
+                  viewport={{ once: true }}
+                  className="h-full"
+                >
+                  <MemberCard
+                    name={member.name}
+                    role={member.role}
                     year={member.year}
                     image={member.image}
                   />
@@ -373,7 +373,7 @@ const Team = () => {
               viewport={{ once: true }}
             >
               <img
-                src="/allmem/oldimage.png" // 
+                src="/allmem/oldimage.png"
                 alt="Core Team Group 2023-2024"
                 className="w-full h-auto transition-transform duration-700 group-hover:scale-105"
               />

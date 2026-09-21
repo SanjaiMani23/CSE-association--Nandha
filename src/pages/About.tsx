@@ -3,7 +3,7 @@
 import React from "react"
 import PageLayout from "@/components/PageLayout"
 import { Button } from "@/components/ui/button"
-import { Users, Target, Eye, Sparkles, ArrowRight, ShieldCheck, Award } from "lucide-react"
+import { Users, Target, Eye, Sparkles, ArrowRight, ShieldCheck, Award, CalendarDays, Layers, Trophy, Image, UserCheck, PartyPopper } from "lucide-react"
 import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import { leadershipData, verticalFacultyIncharges, officeBearersData } from "@/data/team"
@@ -30,6 +30,125 @@ export const About: React.FC = () => {
               Computer Science & Engineering Students Association 2026–27 at Nandha Engineering College.
             </p>
           </motion.div>
+        </div>
+      </section>
+
+      {/* ── Explore the Association — Quick Links ── */}
+      <section className="py-12 md:py-16 px-4 max-w-6xl mx-auto">
+        <motion.div
+          className="text-center mb-10"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <span className="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-violet-500/15 text-violet-300 border border-violet-500/30 inline-block mb-3">
+            Quick Links
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
+            Explore the Association
+          </h2>
+          <p className="text-slate-400 text-sm mt-2 max-w-xl mx-auto">
+            Jump to the section you're looking for — events, team info, achievements, and more.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {[
+            {
+              to: '/events',
+              icon: <PartyPopper className="w-6 h-6" />,
+              title: 'Event',
+              desc: 'Symposiums, workshops, hackathons, and department happenings.',
+              color: 'indigo',
+            },
+            {
+              to: '/events#calendar',
+              icon: <CalendarDays className="w-6 h-6" />,
+              title: 'Activity Calendar',
+              desc: 'Upcoming and past academic activities at a glance.',
+              color: 'violet',
+            },
+            {
+              to: '/#verticals',
+              icon: <Layers className="w-6 h-6" />,
+              title: 'Vertical',
+              desc: 'Five specialized tech verticals powering hands-on learning.',
+              color: 'pink',
+            },
+            {
+              to: '/team',
+              icon: <UserCheck className="w-6 h-6" />,
+              title: 'Faculty & Coordinators',
+              desc: 'Meet the mentors and student coordinators behind the association.',
+              color: 'indigo',
+            },
+            {
+              to: '/achievements',
+              icon: <Trophy className="w-6 h-6" />,
+              title: 'Achievements',
+              desc: 'Awards, recognitions, and student accomplishments.',
+              color: 'violet',
+            },
+            {
+              to: '/gallery',
+              icon: <Image className="w-6 h-6" />,
+              title: 'Gallery',
+              desc: 'Visual archives of events, lab sessions, and campus moments.',
+              color: 'pink',
+            },
+          ].map((card, i) => {
+            const colorMap: Record<string, { bg: string; border: string; icon: string; hoverBorder: string }> = {
+              indigo: {
+                bg: 'bg-indigo-500/10',
+                border: 'border-indigo-500/20',
+                icon: 'text-indigo-400',
+                hoverBorder: 'hover:border-indigo-500/50',
+              },
+              violet: {
+                bg: 'bg-violet-500/10',
+                border: 'border-violet-500/20',
+                icon: 'text-violet-400',
+                hoverBorder: 'hover:border-violet-500/50',
+              },
+              pink: {
+                bg: 'bg-pink-500/10',
+                border: 'border-pink-500/20',
+                icon: 'text-pink-400',
+                hoverBorder: 'hover:border-pink-500/50',
+              },
+            };
+            const c = colorMap[card.color];
+
+            return (
+              <motion.div
+                key={card.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.07 }}
+              >
+                <Link
+                  to={card.to}
+                  className={`group block rounded-2xl border ${c.border} ${c.hoverBorder} bg-slate-800/60 p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-slate-900/40`}
+                >
+                  <div className={`inline-flex items-center justify-center w-11 h-11 rounded-xl ${c.bg} ${c.icon} mb-4 transition-transform duration-300 group-hover:scale-110`}>
+                    {card.icon}
+                  </div>
+                  <h3 className="text-base font-bold text-white mb-1 group-hover:text-white/95 transition-colors">
+                    {card.title}
+                  </h3>
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    {card.desc}
+                  </p>
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold mt-3 text-slate-500 group-hover:text-indigo-400 transition-colors duration-300">
+                    View
+                    <ArrowRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" />
+                  </span>
+                </Link>
+              </motion.div>
+            );
+          })}
         </div>
       </section>
 
