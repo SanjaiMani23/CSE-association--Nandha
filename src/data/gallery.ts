@@ -15,9 +15,96 @@ export interface GalleryItem {
   date?: string;
   image: string;
   caption: string;
+  isProductDay?: boolean;
+  isSynthetics?: boolean;
 }
 
 export const galleryData: GalleryItem[] = [
+  // Product Day 2026–27 Highlights
+  {
+    id: 'gal-prod-01',
+    title: "VENBA's 10-Star Product Launch Ceremony",
+    category: 'Events',
+    year: '2026–27',
+    date: 'Academic Year 2026–27',
+    image: '/images/product-day/product-day-1.jpg',
+    caption: 'Official launch and presentation of VENBA’s software product to the Principal, Chief Guest, HOD, and CSE faculty during Product Day 2026–27.',
+    isProductDay: true,
+  },
+  {
+    id: 'gal-prod-02',
+    title: 'Student Innovation Memento & Dignitary Release',
+    category: 'Events',
+    year: '2026–27',
+    date: 'Academic Year 2026–27',
+    image: '/images/product-day/product-day-2.jpg',
+    caption: 'Dignitaries and department leaders honoring student innovators and celebrating product inauguration.',
+    isProductDay: true,
+  },
+  {
+    id: 'gal-prod-03',
+    title: 'Product Certification & Project Handover Ceremony',
+    category: 'Events',
+    year: '2026–27',
+    date: 'Academic Year 2026–27',
+    image: '/images/product-day/product-day-3.jpg',
+    caption: 'Presentation of official product documentation and milestone certificates by the Principal and HOD.',
+    isProductDay: true,
+  },
+  {
+    id: 'gal-prod-04',
+    title: 'Faculty Mentorship & Project Team Felicitation',
+    category: 'Events',
+    year: '2026–27',
+    date: 'Academic Year 2026–27',
+    image: '/images/product-day/product-day-4.jpg',
+    caption: 'Project developers and faculty advisors assembled on dais celebrating successful product release.',
+    isProductDay: true,
+  },
+  {
+    id: 'gal-prod-05',
+    title: 'MOU & Technical Collaboration Handover',
+    category: 'Events',
+    year: '2026–27',
+    date: 'Academic Year 2026–27',
+    image: '/images/product-day/product-day-5.jpg',
+    caption: 'Formal exchange of project certificates and appreciation documents with faculty advisors.',
+    isProductDay: true,
+  },
+
+  // Synthetics'26 (2026–27) Highlights
+  {
+    id: 'gal-syn-01',
+    title: 'Technical Project Presentation & Prototype Review',
+    category: 'Events',
+    year: '2026–27',
+    date: 'Academic Year 2026–27',
+    image: '/images/synectics-26/synectics-1.png',
+    caption: 'Student teams demonstrating project prototypes and algorithmic pipelines before faculty juries during Synthetics\'26.',
+    isSynthetics: true,
+  },
+  {
+    id: 'gal-syn-02',
+    title: 'Symposium Student Organizing Committee',
+    category: 'Events',
+    year: '2026–27',
+    date: 'Academic Year 2026–27',
+    image: '/images/synectics-26/synectics-2.png',
+    caption: 'The student coordinators, leads, and organizing committee behind the seamless execution of Synthetics\'26.',
+    isSynthetics: true,
+  },
+  {
+    id: 'gal-syn-03',
+    title: 'Coding Hackathon & Competitive Programming Track',
+    category: 'Events',
+    year: '2026–27',
+    date: 'Academic Year 2026–27',
+    image: '/images/synectics-26/synectics-3.jpg',
+    caption: 'Intensive code-a-thon and competitive programming tracks conducted at full capacity in the department computing facility.',
+    isSynthetics: true,
+  },
+
+  // Academic Year 2025–26 & Other Highlights
   {
     id: 'gal-01',
     title: 'Department of Computer Science & Engineering Campus Front',
